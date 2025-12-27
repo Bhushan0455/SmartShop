@@ -41,12 +41,12 @@ git clone https://github.com/YOUR_USERNAME/smartshop.git
 cd smartshop
 
 
-Install Dependencies
+Install Dependencies:
 
 pip install -r requirements.txt
 
 
-Run the Application
+Run the Application:
 
 python app.py
 

@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+static/uploads/
+*.db
+data/real_training_data/
+.env

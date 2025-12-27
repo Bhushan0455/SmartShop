@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartShop - AI Price Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .auth-btn {
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 25px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            background: white;
+            color: #2c3e50;
+        }
+
+        .hero-section {
+            padding: 60px 40px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .hero-title {
+            font-size: 2.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-desc {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        .search-section {
+            padding: 40px;
+            background: white;
+        }
+
+        .search-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 12px;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .image-upload-section {
+            background: white;
+            border: 2px dashed #3498db;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .image-upload-section.dragover {
+            background: #ecf0f1;
+            border-color: #2980b9;
+        }
+
+        .upload-btn {
+            background: #9b59b6;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #8e44ad;
+            transform: translateY(-2px);
+        }
+
+        .results-section {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: #7f8c8d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .refresh-btn {
+            padding: 10px 20px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .best-deal-banner {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .product-card.best-deal {
+            border: 3px solid #27ae60;
+            transform: scale(1.02);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-header {
+            padding: 20px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .product-store {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #3498db;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .best-badge {
+            background: #27ae60;
+        }
+
+        .product-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        .product-actions {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .price-summary {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+
+        .summary-item h3 {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .summary-item p {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        /* Brand Detection Result Styles */
+        .brand-result {
+            background: #e8f6f3;
+            border: 1px solid #27ae60;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            display: none;
+        }
+
+        .suggestion-chip {
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .suggestion-chip:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .upload-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            margin: 15px auto;
+            display: none;
+            border: 2px solid #e0e0e0;
+        }
+
+        .manual-search-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .modal-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .modal-tab.active {
+            border-bottom-color: #3498db;
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .hero-title {
+                font-size: 2em;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+            <div class="modal-tabs">
+                <div class="modal-tab active" onclick="switchAuthTab('login')">Login</div>
+                <div class="modal-tab" onclick="switchAuthTab('register')">Register</div>
+            </div>
+            
+            <div id="loginForm">
+                <input type="email" id="loginEmail" class="modal-input" placeholder="Email" required>
+                <input type="password" id="loginPassword" class="modal-input" placeholder="Password" required>
+                <button class="modal-btn" onclick="login()">Login</button>
+            </div>
+            
+            <div id="registerForm" class="hidden">
+                <input type="text" id="registerName" class="modal-input" placeholder="Full Name" required>
+                <input type="email" id="registerEmail" class="modal-input" placeholder="Email" required>
+                <input type="password" id="registerPassword" class="modal-input" placeholder="Password" required>
+                <button class="modal-btn" onclick="register()">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🛍️ SmartShop</h1>
+            <p>AI-Powered Price Comparison Tool</p>
+            <div class="auth-buttons">
+                <button class="auth-btn" onclick="openAuthModal('login')">Login</button>
+                <button class="auth-btn" onclick="openAuthModal('register')">Register</button>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Find the Best Deals Instantly</h1>
+            <p class="hero-subtitle">
+                Compare prices across top Indian stores using AI-powered search. 
+                Upload a product image or search by name to discover the lowest prices.
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Real-time Prices</h3>
+                    <p class="feature-desc">Get live prices from multiple stores updated in real-time</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Powered Search</h3>
+                    <p class="feature-desc">Upload images for automatic brand and model detection</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏪</div>
+                    <h3 class="feature-title">6+ Major Stores</h3>
+                    <p class="feature-desc">Compare across Amazon, Flipkart, Meesho, and more</p>
+                </div>
+            </div>
+
+            <div class="search-tabs">
+                <div class="tab active" onclick="switchTab('text')">Text Search</div>
+                <div class="tab" onclick="switchTab('image')">Image Search</div>
+            </div>
+
+            <!-- Text Search -->
+            <div id="text-search" class="search-tab-content">
+                <div class="search-container">
+                    <input type="text" 
+                           id="searchInput" 
+                           class="search-input" 
+                           placeholder="Enter product name (e.g., iPhone 15 Pro, Samsung Galaxy S24)">
+                    <button class="search-btn" onclick="searchProducts()">Compare Prices</button>
+                </div>
+            </div>
+
+            <!-- Image Search -->
+            <div id="image-search" class="search-tab-content hidden">
+                <div class="image-upload-section" id="dropZone">
+                    <h3>📸 Upload Product Image</h3>
+                    <p>Take a picture or upload an image of any product</p>
+                    <img id="uploadPreview" class="upload-preview" alt="Image preview">
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
+                        Choose Image
+                    </button>
+                    <p>or drag and drop here</p>
+                </div>
+
+                <!-- Brand Detection Result -->
+                <div id="brandResult" class="brand-result">
+                    <h3 style="color: #27ae60; margin-bottom: 10px;">🎯 Brand Detected!</h3>
+                    <p style="margin-bottom: 10px;"><strong>Brand:</strong> <span id="detectedBrand">Unknown</span></p>
+                    <p style="margin-bottom: 15px;"><strong>Confidence:</strong> <span id="detectionConfidence">0%</span></p>
+                    
+                    <div class="suggestions" id="brandSuggestions" style="display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0;">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <input type="text" id="modelSearchInput" placeholder="Or enter specific model..." 
+                               style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        <button class="search-btn" onclick="searchDetectedBrand()" style="padding: 10px 20px;">
+                            Compare Prices
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Manual Search Option -->
+                <div class="manual-search-section">
+                    <h4>🔍 Can't detect brand? Search manually</h4>
+                    <div class="search-container" style="margin-top: 15px;">
+                        <input type="text" 
+                               id="manualSearchInput" 
+                               class="search-input" 
+                               placeholder="Enter product name manually">
+                        <button class="search-btn" onclick="manualSearch()">
+                            Compare Prices
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section hidden" id="resultsSection">
+            <div class="results-header">
+                <button class="back-btn" onclick="showSearchSection()">← Back to Search</button>
+                <button class="refresh-btn" onclick="refreshPrices()">🔄 Refresh Prices</button>
+            </div>
+
+            <div id="bestDealBanner" class="best-deal-banner hidden">
+                <h2>🎉 Best Deal Found!</h2>
+                <p id="bestDealText">Available at Store for ₹Price</p>
+            </div>
+
+            <h2 id="searchTitle" style="margin-bottom: 20px;">Price Comparison Results</h2>
+
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Searching across Amazon, Flipkart, Meesho, Snapdeal, Reliance Digital, Croma...</p>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be populated here -->
+            </div>
+
+            <div class="price-summary" id="priceSummary" style="display: none;">
+                <h3>💰 Price Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <h3>Lowest Price</h3>
+                        <p id="lowestPrice">₹0</p>
+                    </div>
+                    <div class="summary-item">
+                        <h3>Highest Price</h3>
+                        <p id="highestPrice">₹0</p>
+                    </div>
+                    <div class="summary-item">
+                        <h3>Max Savings</h3>
+                        <p id="maxSavings">₹0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h3>SmartShop</h3>
+        <p>AI-powered price comparison tool helping you find the best deals across multiple stores.</p>
+        <div style="margin-top: 15px;">
+            <span>⚡ Real-time Pricing</span> • 
+            <span>🤖 Smart Comparison</span> • 
+            <span>💰 Best Deals</span>
+        </div>
+    </div>
+
+    <script>
+        // User authentication state
+        let currentUser = null;
+        let currentProducts = [];
+        let currentSearchTerm = '';
+        let detectedBrand = '';
+
+        // Check if user is logged in on page load
+        window.addEventListener('load', () => {
+            checkAuthStatus();
+        });
+
+        // Authentication functions
+        function checkAuthStatus() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                currentUser = JSON.parse(user);
+                updateAuthUI();
+            }
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.querySelector('.auth-buttons');
+            if (currentUser) {
+                authButtons.innerHTML = `
+                    <span style="color: white; margin-right: 15px;">Welcome, ${currentUser.name}</span>
+                    <button class="auth-btn" onclick="logout()">Logout</button>
+                `;
+            }
+        }
+
+        function openAuthModal(tab) {
+            if (currentUser) {
+                alert('You are already logged in!');
+                return;
+            }
+            document.getElementById('authModal').style.display = 'block';
+            switchAuthTab(tab);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            
+            if (tab === 'login') {
+                document.querySelector('.modal-tab:nth-child(1)').classList.add('active');
+                document.getElementById('loginForm').classList.remove('hidden');
+            } else {
+                document.querySelector('.modal-tab:nth-child(2)').classList.add('active');
+                document.getElementById('registerForm').classList.remove('hidden');
+            }
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Simple validation (in real app, this would be API call)
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                updateAuthUI();
+                closeAuthModal();
+                alert('Login successful!');
+            } else {
+                alert('Invalid email or password');
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            if (!name || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return;
+            }
+
+            // Simple registration (in real app, this would be API call)
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            if (users.find(u => u.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+
+            const newUser = { name, email, password, joined: new Date().toISOString() };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            updateAuthUI();
+            closeAuthModal();
+            alert('Registration successful! You can now compare prices.');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateAuthUI();
+            alert('Logged out successfully');
+        }
+
+        function requireAuth(callback) {
+            if (!currentUser) {
+                openAuthModal('login');
+                alert('Please login or register to compare prices');
+                return false;
+            }
+            if (callback) callback();
+            return true;
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.search-tab-content').forEach(c => c.classList.add('hidden'));
+            
+            // Clear state when switching tabs
+            clearSearchState();
+            
+            if (tab === 'text') {
+                document.querySelector('.tab:nth-child(1)').classList.add('active');
+                document.getElementById('text-search').classList.remove('hidden');
+            } else {
+                document.querySelector('.tab:nth-child(2)').classList.add('active');
+                document.getElementById('image-search').classList.remove('hidden');
+            }
+        }
+
+        // Clear search state function
+        function clearSearchState() {
+            detectedBrand = '';
+            currentSearchTerm = '';
+            document.getElementById('brandResult').style.display = 'none';
+            document.getElementById('uploadPreview').style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('manualSearchInput').value = '';
+            document.getElementById('modelSearchInput').value = '';
+        }
+
+        // Fixed Text Search products
+        async function searchProducts() {
+            if (!requireAuth()) return;
+            
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+            
+            if (!query) {
+                alert('Please enter a product name to search');
+                return;
+            }
+
+            // RESET any previous brand detection state
+            detectedBrand = '';
+            document.getElementById('brandResult').style.display = 'none';
+            
+            currentSearchTerm = query;
+            await performSearch(query);
+        }
+
+        // Image upload handling
+        document.getElementById('imageInput').addEventListener('change', handleImageUpload);
+        
+        const dropZone = document.getElementById('dropZone');
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleImageUpload(e) {
+            const files = e.target.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+            
+            const file = files[0];
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload an image file');
+                return;
+            }
+
+            const preview = document.getElementById('uploadPreview');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+
+            // Auto-recognize brand from image
+            recognizeBrand(file);
+        }
+
+        async function recognizeBrand(imageFile) {
+            if (!requireAuth()) return;
+
+            showLoading();
+            
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            try {
+                const response = await fetch('/recognize-brand', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Brand recognition failed');
+                }
+
+                // Display brand detection results
+                displayBrandResult(result);
+                
+            } catch (error) {
+                console.error('Brand recognition error:', error);
+                alert('Brand recognition failed: ' + error.message);
+                // Show manual search option
+                document.getElementById('brandResult').style.display = 'block';
+                document.getElementById('detectedBrand').textContent = 'Unknown';
+                document.getElementById('detectionConfidence').textContent = '0%';
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function displayBrandResult(result) {
+            const brandResult = document.getElementById('brandResult');
+            const detectedBrandSpan = document.getElementById('detectedBrand');
+            const confidenceSpan = document.getElementById('detectionConfidence');
+            const suggestionsDiv = document.getElementById('brandSuggestions');
+
+            detectedBrand = result.detected_brand;
+            detectedBrandSpan.textContent = result.detected_brand;
+            confidenceSpan.textContent = Math.round((result.confidence || 0.5) * 100) + '%';
+
+            // Display suggestions if available
+            if (result.suggestions && result.suggestions.length > 0) {
+                suggestionsDiv.innerHTML = result.suggestions.map(suggestion => `
+                    <button class="suggestion-chip" onclick="searchSpecificModel('${suggestion}')">
+                        ${suggestion}
+                    </button>
+                `).join('');
+                suggestionsDiv.style.display = 'flex';
+            } else {
+                suggestionsDiv.style.display = 'none';
+            }
+
+            brandResult.style.display = 'block';
+            
+            // Auto-focus on model input
+            document.getElementById('modelSearchInput').focus();
+        }
+
+        function searchDetectedBrand() {
+            if (!requireAuth()) return;
+
+            const modelInput = document.getElementById('modelSearchInput');
+            const model = modelInput.value.trim();
+            
+            if (!detectedBrand || detectedBrand === 'Unknown') {
+                alert('Please wait for brand detection or use manual search');
+                return;
+            }
+
+            let searchQuery = detectedBrand;
+            if (model) {
+                searchQuery += ' ' + model;
+            }
+
+            currentSearchTerm = searchQuery;
+            performSearch(searchQuery);
+        }
+
+        function searchSpecificModel(model) {
+            if (!requireAuth()) return;
+
+            if (!detectedBrand || detectedBrand === 'Unknown') {
+                alert('Brand detection failed. Please use manual search.');
+                return;
+            }
+
+            const searchQuery = detectedBrand + ' ' + model;
+            currentSearchTerm = searchQuery;
+            performSearch(searchQuery);
+        }
+
+        function manualSearch() {
+            if (!requireAuth()) return;
+
+            const manualInput = document.getElementById('manualSearchInput');
+            const query = manualInput.value.trim();
+            
+            if (!query) {
+                alert('Please enter a product name to search');
+                return;
+            }
+
+            // Reset brand detection for manual search
+            detectedBrand = '';
+            document.getElementById('brandResult').style.display = 'none';
+
+            currentSearchTerm = query;
+            performSearch(query);
+        }
+
+        // Fixed performSearch function
+        async function performSearch(query) {
+            showLoading();
+            hideResults();
+
+            try {
+                console.log(`🔍 Searching for: "${query}"`);
+                
+                const response = await fetch('/compare', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ productName: query })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Search failed');
+                }
+
+                console.log(`✅ Received ${result.products.length} products for "${query}"`);
+                
+                // DEBUG: Log what products we received
+                result.products.forEach((p, i) => {
+                    console.log(`   ${i+1}. ${p.productName} - ₹${p.price}`);
+                });
+
+                currentProducts = result.products;
+                displayProducts(result.products);
+                showResultsSection();
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                alert('Search failed: ' + error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Fixed displayProducts function
+        // Fixed displayProducts function
+// Fixed displayProducts function - relevance-based sorting
+function displayProducts(products) {
+    const grid = document.getElementById('productsGrid');
+    const bestDealBanner = document.getElementById('bestDealBanner');
+    const priceSummary = document.getElementById('priceSummary');
+    const searchTitle = document.getElementById('searchTitle');
+    
+    if (!products || products.length === 0) {
+        grid.innerHTML = `
+            <div class="loading">
+                <p>😞 No products found. Try a different search term.</p>
+            </div>
+        `;
+        bestDealBanner.classList.add('hidden');
+        priceSummary.style.display = 'none';
+        return;
+    }
+
+    console.log(`🔄 Displaying ${products.length} products in RELEVANCE ORDER`);
+    
+    // The first product is the MOST RELEVANT (not cheapest)
+    const mostRelevantProduct = products[0];
+    
+    // Calculate price summary for information only
+    const prices = products.map(p => p.price);
+    const lowestPrice = Math.min(...prices);
+    const highestPrice = Math.max(...prices);
+    const maxSavings = highestPrice - lowestPrice;
+
+    // Update summary
+    document.getElementById('lowestPrice').textContent = `₹${lowestPrice.toLocaleString()}`;
+    document.getElementById('highestPrice').textContent = `₹${highestPrice.toLocaleString()}`;
+    document.getElementById('maxSavings').textContent = `₹${maxSavings.toLocaleString()}`;
+    
+    // Update best deal banner - show the MOST RELEVANT product
+    document.getElementById('bestDealText').textContent = 
+        `Most relevant: ${mostRelevantProduct.productName} at ${mostRelevantProduct.store} for ₹${mostRelevantProduct.price.toLocaleString()}`;
+    bestDealBanner.classList.remove('hidden');
+    
+    // Update search title to indicate relevance-based results
+    searchTitle.textContent = `${currentSearchTerm} - Most relevant products first`;
+
+    // Display products in RELEVANCE ORDER (backend already sorted them)
+    grid.innerHTML = products.map((product, index) => `
+        <div class="product-card ${index === 0 ? 'best-deal' : ''}">
+            <div class="product-header">
+                <span class="product-store ${index === 0 ? 'best-badge' : ''}">
+                    ${index === 0 ? 'MOST RELEVANT' : product.store}
+                </span>
+                <h3 class="product-title">${product.productName}</h3>
+                <div class="product-price">₹${product.price.toLocaleString()}</div>
+                ${index === 0 ? '<div style="color: #27ae60; font-weight: 600;">🎯 BEST MATCH</div>' : ''}
+                ${index > 0 ? `<div style="color: #7f8c8d; font-size: 0.9em;">Relevance score: ${product.relevanceScore || 'N/A'}</div>` : ''}
+            </div>
+            <div class="product-actions">
+                <a href="${product.url}" target="_blank" class="buy-btn">
+                    View Deal →
+                </a>
+            </div>
+        </div>
+    `).join('');
+
+    priceSummary.style.display = 'block';
+}
+
+        // Section management
+        function showResultsSection() {
+            document.querySelector('.hero-section').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
+        }
+
+        function showSearchSection() {
+            document.querySelector('.hero-section').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            // Reset brand detection
+            clearSearchState();
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function hideResults() {
+            document.getElementById('productsGrid').innerHTML = '';
+            document.getElementById('bestDealBanner').classList.add('hidden');
+            document.getElementById('priceSummary').style.display = 'none';
+        }
+
+        function refreshPrices() {
+            if (currentSearchTerm) {
+                performSearch(currentSearchTerm);
+            }
+        }
+
+        // Fixed Enter key support
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent any default behavior
+                searchProducts();
+            }
+        });
+
+        document.getElementById('manualSearchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                manualSearch();
+            }
+        });
+
+        document.getElementById('modelSearchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchDetectedBrand();
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('authModal');
+            if (event.target === modal) {
+                closeAuthModal();
+            }
+        }
+    </script>
+</body>
+</html>

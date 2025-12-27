@@ -822,4 +822,4 @@ def health_check():
     })
 
 if __name__ == "__main__":
-    app.run(debug = False, port="Your port")
+    app.run(debug = False, port="Your port", localhost = "Your localhost")

@@ -57,17 +57,17 @@ Web Scraping: Requests / BeautifulSoup (if used)
 🏗️ System Architecture
 
 User Uploads Image
-⬇
+        ⬇
 Flask Backend Receives Image
-⬇
+        ⬇
 Image Preprocessing
-⬇
+        ⬇
 MobileNetV2 Model Prediction
-⬇
+        ⬇
 Brand Identified
-⬇
+        ⬇
 Price Scraper Fetches Deals
-⬇
+        ⬇
 Results Displayed to User
 
 🌍 Why It Matters
